@@ -1,6 +1,12 @@
+import os
+from dotenv import load_dotenv
 from sqlmodel import SQLModel,create_engine,Session 
+import os
 
-DATABASE_URL = 'postgresql://postgres:postgres@localhost:5432/car_service_dev_db'
+load_dotenv()
+
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 engine=create_engine(DATABASE_URL, echo=True)
 
