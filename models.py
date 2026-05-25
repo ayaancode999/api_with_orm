@@ -93,7 +93,41 @@ class Cars(SQLModel, table=True):
     minimum_price:float
     in_stock:In_stock
 
+class Payment_Method(str,Enum):
+    CREDIT_CARD="Credit card"
+    CASH="Cash"
+    BANK_TRANSFER="Bank transfer"
+    FINANCING="Financing"
+    LEASE="Lease"
 
+class Transaction_status(str,Enum):
+    PENDING="Pendng"
+    COMPLETE="Complete"
+    CANCELLED="Cancelled"
+    REFUNDED="Refunded"
+
+class Transactions(SQLModel, table=True):
+    id:Optional[int]=Field(default=None, primary_key=True)
+    car_id:int=Field(foreign_key="cars.id")
+    customer_id:int=Field(foreign_key="customers.id")
+    employees_id:Optional[int]=Field(default=None, foreign_key="employees.id")
+    sale_price:int
+    discount:int=0
+    tax:float=0
+    total_amount:int
+    payment_method:Payment_Method=Payment_Method.CREDIT_CARD
+    financing_bank:Optional[str]=None
+    financing_term_months:Optional[int]=None
+    down_payment:Optional[int]=None
+    monthly_installments:Optional[float]=None
+    interest_rate:Optional[float]=None
+    transaction_status:Transaction_status=Transaction_status.PENDING
+    sale_date:date=Field(default_factory=date.today)
+    delivery_date:Optional[int]=None
+    notes:Optional[str]=None
+    cars:Optional[Cars]=Relationship(back_populates="transactions",sa_relationship={"foreign_keys": "[Transactions.car_id]"},)
+    customers:Optional[Customers]=Relationship(back_populates="transactions")
+    employees:Optional[Employees]=Relationship(back_populates="transactions")
 
 
 

@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: car_service_dev_db
     ports:
-      - 5432:5432
+      - 5431:5432
 
 # postgresql://postgres:postgres@localhost:5432/car_service_dev_db  
 # postgresql://neondb_owner:npg_yNKpPgV80BDq@ep-hidden-poetry-abseff5m-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require 
