@@ -19,8 +19,9 @@ class Employees(SQLModel, table=True):
     role: Employee_Role
     hiring_date: date = Field(default_factory=date.today)
     salary: float
-    status: bool = True
-    # add list of sales
+    active: bool = True
+    national_id: Optional[str]=Field(default=None,unique=True)
+    transactions:list["Transactions"]=Relationship(back_populates="employees")
 
 
 class Customers(SQLModel, table=True):
@@ -33,7 +34,8 @@ class Customers(SQLModel, table=True):
     address:Optional[str]=None
     membership:bool=False
     register_date:date=Field(default_factory=date.today)
-    # add list of purchases 
+    transactions:list["Transactions"]=Relationship(back_populates="customers")
+
 
 class Car_Brand(str,Enum):
     TOYOTA = "Toyota"
@@ -68,10 +70,6 @@ class Drive_type(str, Enum):
     FORWARD_WHEEL_DRIVE="FWD"
     BACKWARD_WHEEL_DRIVE="BWD"
 
-class In_stock(str, Enum):
-    SOLD="Sold"
-    IN_STOCK="In stock"
-
 class Cars(SQLModel, table=True):
     id : Optional[int] = Field(default=None, primary_key=True)
     vin_number:str=Field(unique=True,max_length=17,min_length=17)
@@ -91,8 +89,11 @@ class Cars(SQLModel, table=True):
     cost_price:float
     retail_price:float
     minimum_price:float
-    in_stock:In_stock
+    sold:Optional[bool]=Field(default=False)
 
+
+
+    
 class Payment_Method(str,Enum):
     CREDIT_CARD="Credit card"
     CASH="Cash"
